@@ -5,11 +5,8 @@ const path =require('path')
 
 
 exports.createAccount =(req,res,next) =>{
-    console.log(req.body);
     const parts =req.body.Date.toString().split('-');
-    console.log(parts);
     var date = new Date(parts[0], parts[1] - 1, parts[2]); 
-    console.log(date);
     Account.create({
         name:req.body.name,
         Address:req.body.Address,
@@ -20,8 +17,8 @@ exports.createAccount =(req,res,next) =>{
         Customer_Number:req.body.Customer_Number,
         ProductType:req.body.ProductType,
         AccountOnpenBlance:req.body.AccountOpenBlance,
-        transaction:{
-            transction:[
+        BankTransactionHistory:{
+            transctionHistory:[
                 {
                     Date:date,
                     EffectiveDate:date,
@@ -68,22 +65,6 @@ exports.createAccount =(req,res,next) =>{
 
  } 
 
-exports.getTransactionSortForAscending =async(req,res,next)=>{
-    const data =await Account.findOne({AccountNumber: req.query.AccountNumber})
-    const userTransaction =await data.transaction.transction
-    const userTransactionData = arraySort(userTransaction,'Date')
-    for(i=0;i<userTransactionData.length;i++){
-        const  despositamout =userTransactionData[0].DepositAmount
-        console.log("deep",despositamout)
-        const adddespositAmount =userTransactionData[i+1].Blance+despositamout
-        console.log("addBlance",adddespositAmount)
-    }
-    res.status(200).json({
-        message:'Sort Data for Ascending oders',
-        userTransactionData
-    })
-}
-
 
 exports.DepositAmount =async(req,res,next) =>{
    console.log(req.query.AccountNumber);
@@ -96,11 +77,11 @@ exports.DepositAmount =async(req,res,next) =>{
     })
    }else{
 
-       const i =accountNumber.transaction.transction.length*1-1
-      const initialBlane =accountNumber.transaction.transction[i].Blance
+       const i =accountNumber.BankTransactionHistory.transctionHistory.length*1-1
+      const initialBlane =accountNumber.BankTransactionHistory.transctionHistory[i].Blance
       const parts =req.body.Date.toString().split('-');
       var date = new Date(parts[0], parts[1] - 1, parts[2]);
-        const userTransaction =[...accountNumber.transaction.transction]
+        const userTransaction =[...accountNumber.BankTransactionHistory.transctionHistory]
 
          userTransaction.push({
              Date:date,
@@ -113,12 +94,12 @@ exports.DepositAmount =async(req,res,next) =>{
          
 
          const despositamout={
-            transction:userTransaction
+            transctionHistory:userTransaction
          }
         Account.findOneAndUpdate({
               AccountNumber: req.query.AccountNumber,
           }, {
-              transaction:despositamout,
+            BankTransactionHistory:despositamout,
           }, (err, doc) => {
               if (err) {
                   res.status(406).json({
@@ -146,12 +127,12 @@ exports.WithdrawalAmount=async(req,res,next)=>{
         message:`This ${req.query.AccountNumber} accountNumber is does not exits`
     })
    }else{
-    const i =accountNumber.transaction.transction.length*1-1
+    const i =accountNumber.BankTransactionHistory.transctionHistory.length*1-1
     
-      const initialBlane =accountNumber.transaction.transction[i].Blance
+      const initialBlane =accountNumber.BankTransactionHistory.transctionHistory[i].Blance
       const parts =req.body.Date.toString().split('-');
       var date = new Date(parts[0], parts[1] - 1, parts[2]);
-        const userTransaction =[...accountNumber.transaction.transction]
+        const userTransaction =[...accountNumber.BankTransactionHistory.transctionHistory]
 
          userTransaction.push({
              Date:date,
@@ -164,12 +145,12 @@ exports.WithdrawalAmount=async(req,res,next)=>{
          })
 
        const withdrawalamount={
-          transction:userTransaction
+          transctionHistory:userTransaction
        }
       Account.findOneAndUpdate({
             AccountNumber: req.query.AccountNumber,
         }, {
-            transaction:withdrawalamount,
+            BankTransactionHistory:withdrawalamount,
         }, (err, doc) => {
             if (err) {
                 res.status(406).json({
@@ -184,4 +165,20 @@ exports.WithdrawalAmount=async(req,res,next)=>{
         });
    } 
 
+}
+
+
+exports.getAllBankUser =(req,res,next)=>{
+    Account.find()
+    .then(user=>{
+        res.status(200).json({
+            message:'All Bank User List',
+            user
+        })
+    })
+    .catch(err=>{
+        res.status(500).json({
+            message:err.message
+        })
+    })
 }

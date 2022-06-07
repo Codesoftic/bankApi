@@ -45,8 +45,8 @@ const accountSchema = new mongoose.Schema({
        required:true,
        default:500
    },
-   transaction:{
-       transction:[
+   BankTransactionHistory:{
+       transctionHistory:[
        {
            Date:{
                type:Date,

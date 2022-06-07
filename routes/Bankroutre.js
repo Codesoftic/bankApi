@@ -26,7 +26,8 @@ router
 
 router.route('/deposit').patch(bancontrolers.DepositAmount)
 
-router.route('/sort').get(bancontrolers.getTransactionSortForAscending)
+
+router.route('/getAllBankUser').get(bancontrolers.getAllBankUser)
 
 
 module.exports =router

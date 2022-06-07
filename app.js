@@ -12,7 +12,6 @@ const port = process.env.PORT
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 
-app.use(express.static(path.join(__dirname,'build')))
 
 
 const logger = function (req, res, next) {

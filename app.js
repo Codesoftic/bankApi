@@ -21,7 +21,7 @@ const logger = function (req, res, next) {
 
 app.use(logger)
 app.use(cors({
-  origin: 'https://createbankdata.herokuapp.com',
+  origin: 'https://bankapidatareact.herokuapp.com',
   methods:'GET,POST,PUT,PATCH,DELETE',
   credentials:true
 }))

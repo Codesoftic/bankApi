@@ -14,14 +14,15 @@ app.use(express.urlencoded({ extended: true}))
 
 
 
+
 const logger = function (req, res, next) {
-  console.log(`https://createbankdata.herokuapp.com${req.url}`)
+  console.log(`http://localhost:7300${req.url}`)
   next()
 }
 
 app.use(logger)
 app.use(cors({
-  origin: 'https://bankapidatareact.herokuapp.com',
+  origin: 'http://localhost:3000',
   methods:'GET,POST,PUT,PATCH,DELETE',
   credentials:true
 }))

@@ -22,7 +22,7 @@ const logger = function (req, res, next) {
 
 app.use(logger)
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: 'https://bank-user-data-client.herokuapp.com',
   methods:'GET,POST,PUT,PATCH,DELETE',
   credentials:true
 }))

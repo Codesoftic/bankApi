@@ -4,8 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 exports.createAccount = (req, res, next) => {
-  const parts = req.body.Date.toString().split("-");
-  var date = new Date(parts[0], parts[1] - 1, parts[2]);
+  const date = req.body.Date.toString()
   Account.create({
     name: req.body.name,
     Address: req.body.Address,
@@ -209,10 +208,14 @@ exports.copyAccontdata = async (req, res, next) => {
     BankTransactionHistory: copyTransaction,
   })
     .then((data) => {
-      console.log(data);
+         res.status(200).json({
+             data:data
+         })
     })
     .catch((err) => {
-      console.log(err.message);
+        res.status(500).json({
+          err:err.message
+        })
     });
 };
 
@@ -223,7 +226,9 @@ exports.EditBankdeatils = async (req, res, next) => {
     req.body,
     { new: true }
   );
-  console.log(updatedAccountdeatls);
+   res.status(200).json({
+      account:updatedAccountdeatls
+   })
 };
 
 

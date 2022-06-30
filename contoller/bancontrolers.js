@@ -225,3 +225,13 @@ exports.EditBankdeatils = async (req, res, next) => {
   );
   console.log(updatedAccountdeatls);
 };
+
+
+exports.deteleAccountNumber = async (req, res, next) => {
+  let data = await Account.findOneAndRemove({
+    AccountNumber: req.params.id,
+  });
+  res.status(205).json({
+    message: "Account number delete SucessFully",
+  });
+};

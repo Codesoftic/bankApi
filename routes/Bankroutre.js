@@ -31,7 +31,7 @@ router.route('/copy/accountnumber/alldata/:id').get(bancontrolers.copyAccontdata
 
 
 router.route("/edit/accountnumber/:id").patch(bancontrolers.EditBankdeatils);
-
+router.route("/delete/accountnumber/:id").delete(bancontrolers.deteleAccountNumber);
 
 
 module.exports =router
